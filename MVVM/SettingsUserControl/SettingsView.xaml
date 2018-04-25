@@ -1,0 +1,26 @@
+﻿<Window x:Class="FolderSyns.MVVM.SettingsUserControl.SettingsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FolderSyns.Windows" x:Name="SettingWindow"
+        mc:Ignorable="d"
+        Title="SettingCommandsWindow" Height="300" Width="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBox Text="{Binding FolderForHistory}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" />
+        <Button HorizontalAlignment="Right" Grid.Row="0" Grid.Column="2" Content="Настройки" Command="{Binding SaveCommand}" />
+
+    </Grid>
+</Window>
