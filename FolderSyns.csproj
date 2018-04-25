@@ -50,7 +50,11 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
+    <Reference Include="GrayscaleEffect, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\GrayscaleEffect.1.0.1\lib\GrayscaleEffect.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -71,7 +75,37 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Windows\HistoryWindow.xaml">
+    <Compile Include="Code\Helpers\PropertyHelper.cs" />
+    <Compile Include="Code\Helpers\RelayCommand.cs" />
+    <Compile Include="Code\Helpers\ControlSettings.cs" />
+    <Compile Include="MVVM\SettingsUserControl\SettingsModel.cs" />
+    <Compile Include="Conderters\HistoryDateTimeConverter.cs" />
+    <Compile Include="Conderters\HistoryItemConverter.cs" />
+    <Compile Include="MVVM\HistoryUserControl\HistoryView.xaml.cs">
+      <DependentUpon>HistoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\HistoryUserControl\HistoryViewModel.cs" />
+    <Compile Include="MVVM\MainUserControl\MainUserControlView.xaml.cs">
+      <DependentUpon>MainUserControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\MainUserControl\MainUserControlViewModel.cs" />
+    <Compile Include="MVVM\SettingsUserControl\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\SettingsUserControl\SettingsViewModel.cs" />
+    <Page Include="MVVM\HistoryUserControl\HistoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MVVM\MainUserControl\MainUserControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MVVM\SettingsUserControl\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\ResourceDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -84,11 +118,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Code\ErrorSave.cs" />
-    <Compile Include="Code\History.cs" />
+    <Compile Include="MVVM\HistoryUserControl\HistoryModel.cs" />
     <Compile Include="Code\FileAction.cs" />
-    <Compile Include="Windows\HistoryWindow.xaml.cs">
-      <DependentUpon>HistoryWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -133,6 +164,17 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Copy.png" />
+    <Resource Include="Resources\Delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\copy-24.png" />
+    <Resource Include="Resources\delete-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Code\Settings\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

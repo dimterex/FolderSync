@@ -1,18 +1,19 @@
-﻿namespace FolderSyns.Code
+﻿using FolderSyns.Code;
+
+namespace FolderSyns.MVVM.HistoryUserControl
 {
     using System;
     using System.IO;
     using System.Xml;
     using System.Xml.Serialization;
 
-    public static class History
+    public class HistoryModel
     {
-        private static string FILE_NAME = "history.xml";
-        static History()
-        {
-        }
+        private static string FILE_NAME = "History.xml";
 
-        public static void SerializeObject<T>(T serializableObject)
+        public static HistoryModel Inctance { get; } = new HistoryModel();
+
+        public void SerializeObject<T>(T serializableObject)
         {
             if (serializableObject == null)
                 return;
@@ -38,7 +39,7 @@
             }
         }
 
-        public static T DeSerializeObject<T>()
+        public T DeSerializeObject<T>()
         {
             if (string.IsNullOrEmpty(FILE_NAME))
                 return default(T);
