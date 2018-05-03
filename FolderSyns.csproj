@@ -75,7 +75,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Code\Helpers\PropertyHelper.cs" />
+    <Compile Include="Code\Helpers\FolderType.cs" />
     <Compile Include="Code\Helpers\RelayCommand.cs" />
     <Compile Include="Code\Helpers\ControlSettings.cs" />
     <Compile Include="MVVM\SettingsUserControl\SettingsModel.cs" />
@@ -109,10 +109,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -120,10 +116,6 @@
     <Compile Include="Code\ErrorSave.cs" />
     <Compile Include="MVVM\HistoryUserControl\HistoryModel.cs" />
     <Compile Include="Code\FileAction.cs" />
-    <Compile Include="Windows\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\Annotations.cs" />
@@ -166,15 +158,23 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Copy.png" />
-    <Resource Include="Resources\Delete.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\copy-24.png" />
     <Resource Include="Resources\delete-24.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Code\Settings\" />
+    <Resource Include="Resources\save-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\update-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\close-window-24.png" />
+    <Resource Include="Resources\history-24.png" />
+    <Resource Include="Resources\play-3-24.png" />
+    <Resource Include="Resources\settings-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\folder-24.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

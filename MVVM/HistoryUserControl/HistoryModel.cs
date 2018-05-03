@@ -1,18 +1,28 @@
-﻿using FolderSyns.Code;
-
-namespace FolderSyns.MVVM.HistoryUserControl
+﻿namespace FolderSyns.MVVM.HistoryUserControl
 {
     using System;
     using System.IO;
     using System.Xml;
     using System.Xml.Serialization;
 
+    using FolderSyns.Code;
+    using FolderSyns.MVVM.SettingsUserControl;
+
     public class HistoryModel
     {
-        private static string FILE_NAME = "History.xml";
+        #region Constants
+        private const string FILE_NAME = "History.xml";
+        #endregion Constants
 
+        #region Fields
+        private readonly string _filePath = Path.Combine(SettingsModel.Inctance.FolderForHistory, FILE_NAME);
+        #endregion Fields
+
+        #region Properties
         public static HistoryModel Inctance { get; } = new HistoryModel();
+        #endregion Properties
 
+        #region Methods
         public void SerializeObject<T>(T serializableObject)
         {
             if (serializableObject == null)
@@ -29,7 +39,7 @@ namespace FolderSyns.MVVM.HistoryUserControl
                     stream.Position = 0;
 
                     xmlDocument.Load(stream);
-                    xmlDocument.Save(FILE_NAME);
+                    xmlDocument.Save(_filePath);
                     stream.Close();
                 }
             }
@@ -41,14 +51,11 @@ namespace FolderSyns.MVVM.HistoryUserControl
 
         public T DeSerializeObject<T>()
         {
-            if (string.IsNullOrEmpty(FILE_NAME))
-                return default(T);
-
             T objectOut = default(T);
             try
             {
                 var xmlDocument = new XmlDocument();
-                xmlDocument.Load(FILE_NAME);
+                xmlDocument.Load(_filePath);
                 string xmlString = xmlDocument.OuterXml;
 
                 using (var read = new StringReader(xmlString))
@@ -72,5 +79,6 @@ namespace FolderSyns.MVVM.HistoryUserControl
 
             return objectOut;
         }
+        #endregion Methods
     }
 }

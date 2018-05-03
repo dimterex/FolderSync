@@ -1,26 +1,41 @@
 ﻿namespace FolderSyns.Code
 {
     using System;
-    using FolderSyns.Code.Helpers;
+    using System.ComponentModel;
+    using System.Runtime.CompilerServices;
+
+    using FolderSyns.Annotations;
 
     [Serializable]
-    public class FileAction
+    public class FileAction : INotifyPropertyChanged
     {
+        #region Fields
         [NonSerialized]
         private bool _isCopy;
         [NonSerialized]
         private bool _isDelete;
+        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion Fields
 
+        #region Properties
         public bool IsCopy
         {
             get => _isCopy;
-            set => PropertyHelper.SetProperty(ref _isCopy, value, this, nameof(IsCopy));
+            set
+            {
+                _isCopy = value;
+                OnPropertyChanged(nameof(IsCopy));
+            }
         }
 
         public bool IsDelete
         {
             get => _isDelete;
-            set => PropertyHelper.SetProperty(ref _isDelete, value, this, nameof(IsDelete));
+            set
+            {
+                _isDelete = value;
+                OnPropertyChanged(nameof(IsDelete));
+            }
         }
 
         public string FileName { get; set; }
@@ -30,6 +45,7 @@
         public string OldFolder { get; set; }
 
         public DateTime DateTime { get; set; }
+        #endregion Properties
 
         public FileAction()
         {
@@ -43,5 +59,13 @@
             IsCopy = false;
             IsDelete = false;
         }
+
+        #region Methods
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion Methods
     }
 }

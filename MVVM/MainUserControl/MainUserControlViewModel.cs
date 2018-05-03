@@ -1,6 +1,4 @@
-﻿using FolderSyns.MVVM.HistoryUserControl;
-
-namespace FolderSyns.MVVM.MainUserControl
+﻿namespace FolderSyns.MVVM.MainUserControl
 {
     using System;
     using System.Collections.Generic;
@@ -9,13 +7,18 @@ namespace FolderSyns.MVVM.MainUserControl
     using System.IO;
     using System.Linq;
     using System.Windows.Forms;
+    using System.ComponentModel;
+    using System.Runtime.CompilerServices;
 
+    using FolderSyns.Annotations;
     using FolderSyns.Code;
     using FolderSyns.Code.Helpers;
-    using FolderSyns.Windows;
+    using FolderSyns.MVVM.HistoryUserControl;
+    using FolderSyns.MVVM.SettingsUserControl;
 
-    public class MainUserControlViewModel
+    public class MainUserControlViewModel : INotifyPropertyChanged
     {
+        #region Fields
         private readonly List<FileAction> _serializeObjects;
 
         private RelayCommand _refreshCommand;
@@ -26,6 +29,14 @@ namespace FolderSyns.MVVM.MainUserControl
 
         private RelayCommand _openFolderCommand;
 
+        private string _sourcePath;
+        private string _targetPath;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion Fields
+
+        #region Properties
         public static MainUserControlViewModel Instance { get; } = new MainUserControlViewModel();
 
         public RelayCommand RefreshCommand => _refreshCommand;
@@ -39,19 +50,46 @@ namespace FolderSyns.MVVM.MainUserControl
         /// </summary>
         public RelayCommand OpenFolderCommand => _openFolderCommand;
 
-        public string SourcePath { get; set; }
-        public string TargetPath { get; set; }
-        public ObservableCollection<FileAction> InSourceFileNotExistTarget { get; set; }
-        public ObservableCollection<FileAction> InTargetFileNotExistSource { get; set; }
+        public string SourcePath
+        {
+            get => _sourcePath;
+            set
+            {
+                _sourcePath = value;
+                OnPropertyChanged(nameof(SourcePath));
+            }
+        }
+
+        public string TargetPath
+        {
+            get => _targetPath;
+            set
+            {
+                _targetPath = value;
+                OnPropertyChanged(nameof(TargetPath));
+            }
+        }
+
+        public ObservableCollection<FileAction> InSourceFileNotExistTarget { get; }
+        public ObservableCollection<FileAction> InTargetFileNotExistSource { get; }
+        #endregion Properties
+
+      
+
+
 
         private MainUserControlViewModel()
         {
             InSourceFileNotExistTarget = new ObservableCollection<FileAction>();
             InTargetFileNotExistSource = new ObservableCollection<FileAction>();
+
             _serializeObjects = HistoryModel.Inctance.DeSerializeObject<List<FileAction>>() ?? new List<FileAction>();
             InitComands();
-            SourcePath = @"D:\Синхронизация\Музыка";
+            SourcePath = SettingsModel.Inctance.DefaultSourceFolder;
+            TargetPath = SettingsModel.Inctance.DefaultTargetFolder;
         }
+
+        #region Methods
 
         private void InitComands()
         {
@@ -71,22 +109,17 @@ namespace FolderSyns.MVVM.MainUserControl
         /// <param name="param">Указывается первая папка.</param>
         private void OpenFolderPath(object param)
         {
-            if (!bool.TryParse(param.ToString(), out bool isSource))
+            if (!Enum.TryParse(param.ToString(), out FolderType folderType))
                 return;
 
-            var folderBrowserDialog = new FolderBrowserDialog();
-            if (!string.IsNullOrEmpty(SourcePath) && isSource)
-                folderBrowserDialog.SelectedPath = SourcePath;
-            else if (!isSource && !string.IsNullOrEmpty(TargetPath))
-                folderBrowserDialog.SelectedPath = TargetPath;
-
-            folderBrowserDialog.Description = isSource ? "Укажите первую папку" : "Укажите вторую папку";
-            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            switch (folderType)
             {
-                if (isSource)
-                    SourcePath = folderBrowserDialog.SelectedPath;
-                else
-                    TargetPath = folderBrowserDialog.SelectedPath;
+                case FolderType.SourceFolder:
+                    SourcePath = OpenFolderDialog.OpenFolderPath(SourcePath);
+                    return;
+                case FolderType.TargetFolder:
+                    TargetPath = OpenFolderDialog.OpenFolderPath(TargetPath);
+                    return;
             }
         }
 
@@ -111,10 +144,10 @@ namespace FolderSyns.MVVM.MainUserControl
         private void RefreshAction()
         {
             if (string.IsNullOrEmpty(SourcePath))
-                OpenFolderPath(true);
+                OpenFolderPath(FolderType.SourceFolder);
 
             if (string.IsNullOrEmpty(TargetPath))
-                OpenFolderPath(false);
+                OpenFolderPath(FolderType.TargetFolder);
 
             var sourceFiles = ReadLogFile(SourcePath);
             var targetFiles = ReadLogFile(TargetPath);
@@ -146,10 +179,10 @@ namespace FolderSyns.MVVM.MainUserControl
             StartActions(TargetPath, InSourceFileNotExistTarget);
             StartActions(SourcePath, InTargetFileNotExistSource);
 
-            _serializeObjects.AddRange(InSourceFileNotExistTarget);
-            _serializeObjects.AddRange(InTargetFileNotExistSource);
+            _serializeObjects.AddRange(InSourceFileNotExistTarget.Where(f => f.IsCopy || f.IsDelete));
+            _serializeObjects.AddRange(InTargetFileNotExistSource.Where(f => f.IsCopy || f.IsDelete));
 
-            System.Windows.Forms.MessageBox.Show("Выполнено");
+            MessageBox.Show("Выполнено");
 
             RefreshAction();
         }
@@ -174,7 +207,9 @@ namespace FolderSyns.MVVM.MainUserControl
         /// Закрытие приложения. Сохранения истории.
         /// </summary>
         private void CloseAction()
-        {
+        { 
+            SettingsModel.Inctance.SetDefaultSourceFolder(SourcePath);
+            SettingsModel.Inctance.SetDefaultTargetFolder(TargetPath);
             HistoryModel.Inctance.SerializeObject(_serializeObjects);
             // PushNewCommit();
         }
@@ -211,16 +246,27 @@ namespace FolderSyns.MVVM.MainUserControl
         private void HistoryAction()
         {
             HistoryViewModel.Instance.SetHistory(_serializeObjects);
-            var historyView = new HistoryView();
-            historyView.DataContext = HistoryViewModel.Instance;
+            var historyView = new HistoryView
+            {
+                DataContext = HistoryViewModel.Instance
+            };
             historyView.Show(); 
         }
 
         private void SettingsAction()
         {
-            var settingsView = new SettingsUserControl.SettingsView();
-            settingsView.DataContext = SettingsUserControl.SettingsViewModel.Inctance;
+            var settingsView = new SettingsView
+            {
+                DataContext = SettingsViewModel.Inctance
+            };
             settingsView.Show();
         }
+
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion Methods
     }
 }
