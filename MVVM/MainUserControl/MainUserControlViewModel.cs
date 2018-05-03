@@ -73,17 +73,14 @@
         public ObservableCollection<FileAction> InSourceFileNotExistTarget { get; }
         public ObservableCollection<FileAction> InTargetFileNotExistSource { get; }
         #endregion Properties
-
-      
-
-
-
+        
         private MainUserControlViewModel()
         {
             InSourceFileNotExistTarget = new ObservableCollection<FileAction>();
             InTargetFileNotExistSource = new ObservableCollection<FileAction>();
 
             _serializeObjects = HistoryModel.Inctance.DeSerializeObject<List<FileAction>>() ?? new List<FileAction>();
+            _serializeObjects = _serializeObjects.Where(x => x.IsDelete || x.IsCopy).ToList();
             InitComands();
             SourcePath = SettingsModel.Inctance.DefaultSourceFolder;
             TargetPath = SettingsModel.Inctance.DefaultTargetFolder;
@@ -184,13 +181,15 @@
 
             MessageBox.Show("Выполнено");
 
+            InSourceFileNotExistTarget.Clear();
+            InTargetFileNotExistSource.Clear();
             RefreshAction();
         }
 
         /// <summary>
         /// Выполнить действия.
         /// </summary>
-        private void StartActions(string folder, ObservableCollection<FileAction> logInfos)
+        private void StartActions(string folder, IEnumerable<FileAction> logInfos)
         {
             foreach (var item in logInfos)
             {
@@ -211,33 +210,6 @@
             SettingsModel.Inctance.SetDefaultSourceFolder(SourcePath);
             SettingsModel.Inctance.SetDefaultTargetFolder(TargetPath);
             HistoryModel.Inctance.SerializeObject(_serializeObjects);
-            // PushNewCommit();
-        }
-
-        private void PushNewCommit()
-        {
-            string cdCommand = @"cd D:\Синхронизация\Музыка";
-            string gitCommand = "git";
-            string gitAddArgument = @"pause";
-            string gitCommitArgument = @"commit ""explanations_of_changes"" ";
-            string gitPushArgument = @"push our_remote";
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "git",
-                    RedirectStandardInput = true,
-                    UseShellExecute = false,
-                },
-            };
-            process.Start();
-
-            using (var writer = process.StandardInput)
-            {
-                writer.WriteLine();
-                process.WaitForExit();
-                writer.Close();
-            }
         }
 
         /// <summary>

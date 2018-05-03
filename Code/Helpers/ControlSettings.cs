@@ -1,10 +1,6 @@
 ﻿namespace FolderSyns.Code.Helpers
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Configuration;
 
     public class ControlSettings
@@ -35,6 +31,5 @@
                 _appSettingsSection.Settings.Add(property, path);
             _configuration.Save();
         }
-
     }
 }

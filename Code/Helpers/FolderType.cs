@@ -7,7 +7,6 @@
         SourceFolder,
         TargetFolder,
         FolderForHistory,
-
     }
 
     public static class OpenFolderDialog
@@ -21,20 +20,11 @@
             var folderBrowserDialog = new FolderBrowserDialog();
             if (!string.IsNullOrEmpty(folderPath))
                 folderBrowserDialog.SelectedPath = folderPath;
-
-            // ??? folderBrowserDialog.Description = "Укажите папку";
+  
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
-            {
                 return folderBrowserDialog.SelectedPath;
-            }
 
             return string.Empty;
-
         }
-
-
-
-
-
     }
 }
