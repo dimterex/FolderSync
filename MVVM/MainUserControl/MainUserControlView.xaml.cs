@@ -1,15 +1,17 @@
 ﻿namespace FolderSyns.MVVM.MainUserControl
 {
-    using System.Windows.Controls;
 
     /// <summary>
     /// Логика взаимодействия для MainUserControl.xaml
     /// </summary>
-    public partial class MainUserControlView : UserControl
+    public partial class MainUserControlView
     {
         public MainUserControlView()
         {
+            var mainUserControlViewModel = MainUserControlViewModel.Instance;
+            DataContext = mainUserControlViewModel;
             InitializeComponent();
+            Closed += (sender, args) => { mainUserControlViewModel.CloseCommand.Execute(); };
         }
     }
 }

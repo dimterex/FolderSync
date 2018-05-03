@@ -1,23 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FolderSyns.Code;
-
-namespace FolderSyns.MVVM.HistoryUserControl
+﻿namespace FolderSyns.MVVM.HistoryUserControl
 {
-    public class HistoryViewModel
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Runtime.CompilerServices;
+
+    using FolderSyns.Annotations;
+    using FolderSyns.Code;
+
+    public class HistoryViewModel : INotifyPropertyChanged
     {
+        #region Fields
+        private List<FileAction> _fileActions;
+        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion Fields
+
+        #region Properties
         public static HistoryViewModel Instance { get; } = new HistoryViewModel();
 
-        private HistoryViewModel()
+        public List<FileAction> FileActions
         {
+            get => _fileActions;
+            set
+            {
+                _fileActions = value;
+                OnPropertyChanged(nameof(FileActions));
+            }
         }
+        #endregion Properties
 
+        #region Methods
         public void SetHistory(List<FileAction> fileActions)
         {
-
+            FileActions = fileActions;
         }
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion Methods
     }
 }

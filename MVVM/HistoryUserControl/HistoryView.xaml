@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:windows="clr-namespace:FolderSyns.Windows"
              xmlns:conderters="clr-namespace:FolderSyns.Conderters"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="200">
@@ -14,7 +13,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <DataGrid AutoGenerateColumns="False" IsReadOnly="True">
+    <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding FileActions}" IsReadOnly="True">
         <DataGrid.Columns>
             <DataGridTextColumn Header="Время" Binding="{Binding DateTime, Converter={StaticResource HistoryDateTimeConverter}}" />
             <DataGridTextColumn Header="Файл" Binding="{Binding FileName}" />
