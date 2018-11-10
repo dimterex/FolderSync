@@ -50,13 +50,28 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
+    <Reference Include="CommonServiceLocator, Version=2.0.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>packages\CommonServiceLocator.2.0.4\lib\net46\CommonServiceLocator.dll</HintPath>
+    </Reference>
     <Reference Include="GrayscaleEffect, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\GrayscaleEffect.1.0.1\lib\GrayscaleEffect.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism, Version=7.1.0.431, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>packages\Prism.Core.7.1.0.431\lib\net45\Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Unity.Wpf, Version=7.1.0.431, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>packages\Prism.Unity.7.1.0.431\lib\net45\Prism.Unity.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Wpf, Version=7.1.0.431, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>packages\Prism.Wpf.7.1.0.431\lib\net45\Prism.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Prism.Wpf.7.1.0.431\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -65,6 +80,12 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="Unity.Abstractions, Version=3.3.1.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>packages\Unity.Abstractions.3.3.1\lib\net46\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.8.11.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>packages\Unity.Container.5.8.11\lib\net46\Unity.Container.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -75,33 +96,39 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Code\Helpers\FolderType.cs" />
-    <Compile Include="Code\Helpers\RelayCommand.cs" />
-    <Compile Include="Code\Helpers\ControlSettings.cs" />
-    <Compile Include="MVVM\SettingsUserControl\SettingsModel.cs" />
-    <Compile Include="Conderters\HistoryDateTimeConverter.cs" />
-    <Compile Include="Conderters\HistoryItemConverter.cs" />
-    <Compile Include="MVVM\HistoryUserControl\HistoryView.xaml.cs">
+    <Compile Include="Interfaces\IGetFolderManager.cs" />
+    <Compile Include="Core\GetFolderManager.cs" />
+    <Compile Include="Enums\FolderType.cs" />
+    <Compile Include="Interfaces\IConfigManager.cs" />
+    <Compile Include="Code\RelayCommand.cs" />
+    <Compile Include="Core\ConfigManager.cs" />
+    <Compile Include="Interfaces\ILogManager.cs" />
+    <Compile Include="Interfaces\ISettingsManager.cs" />
+    <Compile Include="Interfaces\IHistoryManager.cs" />
+    <Compile Include="Core\SettingsManager.cs" />
+    <Compile Include="Converters\HistoryDateTimeConverter.cs" />
+    <Compile Include="Converters\HistoryItemConverter.cs" />
+    <Compile Include="Views\HistoryView.xaml.cs">
       <DependentUpon>HistoryView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\HistoryUserControl\HistoryViewModel.cs" />
-    <Compile Include="MVVM\MainUserControl\MainUserControlView.xaml.cs">
+    <Compile Include="ViewModels\HistoryViewModel.cs" />
+    <Compile Include="Views\MainUserControlView.xaml.cs">
       <DependentUpon>MainUserControlView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\MainUserControl\MainUserControlViewModel.cs" />
-    <Compile Include="MVVM\SettingsUserControl\SettingsView.xaml.cs">
+    <Compile Include="ViewModels\MainUserControlViewModel.cs" />
+    <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\SettingsUserControl\SettingsViewModel.cs" />
-    <Page Include="MVVM\HistoryUserControl\HistoryView.xaml">
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Page Include="Views\HistoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\MainUserControl\MainUserControlView.xaml">
+    <Page Include="Views\MainUserControlView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\SettingsUserControl\SettingsView.xaml">
+    <Page Include="Views\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -113,8 +140,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Code\ErrorSave.cs" />
-    <Compile Include="MVVM\HistoryUserControl\HistoryModel.cs" />
+    <Compile Include="Core\LogManager.cs" />
+    <Compile Include="Core\HistoryManager.cs" />
     <Compile Include="Code\FileAction.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -176,5 +203,6 @@
   <ItemGroup>
     <Resource Include="Resources\folder-24.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

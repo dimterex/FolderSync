@@ -1,4 +1,4 @@
-﻿namespace FolderSyns.Code.Helpers
+﻿namespace FolderSyns.Code
 {
     using System;
     using System.Windows.Input;
