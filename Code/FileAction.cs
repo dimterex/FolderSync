@@ -1,41 +1,35 @@
 ﻿namespace FolderSyns.Code
 {
-    using System;
-    using System.ComponentModel;
-    using System.Runtime.CompilerServices;
 
-    using FolderSyns.Annotations;
+    using Prism.Mvvm;
+
+    using System;
 
     [Serializable]
-    public class FileAction : INotifyPropertyChanged
+    public class FileAction : BindableBase
     {
         #region Fields
+
         [NonSerialized]
         private bool _isCopy;
+
         [NonSerialized]
         private bool _isDelete;
-        public event PropertyChangedEventHandler PropertyChanged;
+
         #endregion Fields
 
         #region Properties
+
         public bool IsCopy
         {
             get => _isCopy;
-            set
-            {
-                _isCopy = value;
-                OnPropertyChanged(nameof(IsCopy));
-            }
+            set => SetProperty(ref _isCopy, value);
         }
 
         public bool IsDelete
         {
             get => _isDelete;
-            set
-            {
-                _isDelete = value;
-                OnPropertyChanged(nameof(IsDelete));
-            }
+            set => SetProperty(ref _isDelete, value);
         }
 
         public string FileName { get; set; }
@@ -45,12 +39,9 @@
         public string OldFolder { get; set; }
 
         public DateTime DateTime { get; set; }
+
         #endregion Properties
-
-        public FileAction()
-        {
-        }
-
+       
         public FileAction(string fileName, string oldFolder, string newFolder)
         {
             OldFolder = oldFolder;
@@ -59,13 +50,5 @@
             IsCopy = false;
             IsDelete = false;
         }
-
-        #region Methods
-        [NotifyPropertyChangedInvocator]
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion Methods
     }
 }

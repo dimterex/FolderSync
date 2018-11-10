@@ -1,21 +1,16 @@
-﻿namespace FolderSyns.Code.Helpers
+﻿namespace FolderSyns.Core
 {
+    using FolderSyns.Interfaces;
+
     using System.Windows.Forms;
-
-    public enum FolderType
-    {
-        SourceFolder,
-        TargetFolder,
-        FolderForHistory,
-    }
-
-    public static class OpenFolderDialog
+    
+    public class GetFolderManager : IGetFolderManager
     {
         /// <summary>
         /// Указать папку.
         /// </summary>
         /// <folderPath name="folderPath">Указывается первая папка.</folderPath>
-        public static string OpenFolderPath(string folderPath)
+        public string OpenFolderPath(string folderPath)
         {
             var folderBrowserDialog = new FolderBrowserDialog();
             if (!string.IsNullOrEmpty(folderPath))

@@ -1,10 +1,9 @@
-﻿namespace FolderSyns.Conderters
+﻿namespace FolderSyns.Converters
 {
     using System;
     using System.Globalization;
     using System.Text;
     using System.Windows.Data;
-
     using FolderSyns.Code;
 
     public class HistoryItemConverter : IValueConverter

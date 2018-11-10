@@ -1,26 +1,38 @@
-﻿namespace FolderSyns.MVVM.HistoryUserControl
+﻿namespace FolderSyns.Core
 {
     using System;
     using System.IO;
     using System.Xml;
     using System.Xml.Serialization;
 
-    using FolderSyns.Code;
-    using FolderSyns.MVVM.SettingsUserControl;
+    using FolderSyns.Interfaces;
 
-    public class HistoryModel
+    public class HistoryManager : IHistoryManager
     {
         #region Constants
+
         private const string FILE_NAME = "History.xml";
+
         #endregion Constants
 
         #region Fields
-        private readonly string _filePath = Path.Combine(SettingsModel.Inctance.FolderForHistory, FILE_NAME);
+
+        private readonly ISettingsManager _settingsManager;
+        private readonly ILogManager _logManager;
+        private readonly string _filePath;
+
         #endregion Fields
 
-        #region Properties
-        public static HistoryModel Inctance { get; } = new HistoryModel();
-        #endregion Properties
+        #region Constuctors
+
+        public HistoryManager(ISettingsManager settingsManager, ILogManager logManager)
+        {
+            _settingsManager = settingsManager;
+            _logManager = logManager;
+            _filePath = Path.Combine(_settingsManager.FolderForHistory, FILE_NAME);
+        }
+
+        #endregion Constuctors
 
         #region Methods
         public void SerializeObject<T>(T serializableObject)
@@ -45,7 +57,7 @@
             }
             catch (Exception ex)
             {
-                ErrorSave.SaveError(ex);
+                _logManager.SaveError(ex);
             }
         }
 
@@ -74,7 +86,7 @@
             }
             catch (Exception ex)
             {
-                ErrorSave.SaveError(ex);
+                _logManager.SaveError(ex);
             }
 
             return objectOut;

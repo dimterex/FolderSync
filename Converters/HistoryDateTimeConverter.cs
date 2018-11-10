@@ -1,9 +1,9 @@
-﻿namespace FolderSyns.Conderters
-{
-    using System;
-    using System.Globalization;
-    using System.Windows.Data;
+﻿using System;
+using System.Globalization;
+using System.Windows.Data;
 
+namespace FolderSyns.Converters
+{
     public class HistoryDateTimeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

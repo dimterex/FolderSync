@@ -2,8 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:grayscaleEffect="clr-namespace:GrayscaleEffect;assembly=GrayscaleEffect">
 
-
-
     <BitmapImage x:Key="CopyImage_x24" UriSource="pack://application:,,,/Resources/copy-24.png" />
     <BitmapImage x:Key="DeleteImage_x24" UriSource="pack://application:,,,/Resources/delete-24.png" />
     <BitmapImage x:Key="UpdateImage_x24" UriSource="pack://application:,,,/Resources/update-24.png" />

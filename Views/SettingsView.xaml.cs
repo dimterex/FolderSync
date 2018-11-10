@@ -1,11 +1,9 @@
-﻿namespace FolderSyns.MVVM.SettingsUserControl
+﻿namespace FolderSyns.Views
 {
-    using System.Windows;
-
     /// <summary>
     /// Логика взаимодействия для SettingsView.xaml
     /// </summary>
-    public partial class SettingsView : Window
+    public partial class SettingsView
     {
         public SettingsView()
         {
