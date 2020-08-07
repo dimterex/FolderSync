@@ -1,0 +1,156 @@
+﻿<Window x:Class="UI.View.Main.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        interactionRequest:ViewModelLocator.AutoWireViewModel="True"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:main="clr-namespace:UI.ViewModel.Main;assembly=UI.ViewModel"
+        xmlns:history="clr-namespace:UI.View.History"
+        xmlns:settings="clr-namespace:UI.View.Settings"
+        xmlns:folderInfo="clr-namespace:UI.View.FolderInfo"
+        xmlns:interactionRequest="http://prismlibrary.com/"
+        xmlns:triggerAction="clr-namespace:UI.View.TriggerAction"
+        xmlns:viewModel="clr-namespace:UI.ViewModel;assembly=UI.ViewModel"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=main:MainWindowViewModel}"
+        Height="330"
+        Width="800">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding CloseCommand}" />
+        </i:EventTrigger>
+
+        <interactionRequest:InteractionRequestTrigger SourceObject="{Binding HistoryCommandNotificationRequest}">
+            <triggerAction:CustomPopupWindowAction>
+                <triggerAction:CustomPopupWindowAction.WindowStyle>
+                    <Style TargetType="Window">
+                        <Setter Property="Title" Value="{Binding Source={StaticResource LocalizationManager}, Path=Instance.Resources.History}" />
+                        <Setter Property="ResizeMode" Value="CanResizeWithGrip" />
+                        <Setter Property="ShowInTaskbar" Value="False" />
+                    </Style>
+                </triggerAction:CustomPopupWindowAction.WindowStyle>
+                <triggerAction:CustomPopupWindowAction.WindowContent>
+                    <history:HistoryView />
+                </triggerAction:CustomPopupWindowAction.WindowContent>
+            </triggerAction:CustomPopupWindowAction>
+        </interactionRequest:InteractionRequestTrigger>
+
+        <interactionRequest:InteractionRequestTrigger SourceObject="{Binding SettingsCommandNotificationRequest}">
+            <triggerAction:CustomPopupWindowAction>
+                <triggerAction:CustomPopupWindowAction.WindowStyle>
+                    <Style TargetType="Window">
+                        <Setter Property="Title" Value="{Binding Source={StaticResource LocalizationManager}, Path=Instance.Resources.Settings}" />
+                       
+                        <Setter Property="SizeToContent" Value="WidthAndHeight" />
+                        <Setter Property="ResizeMode" Value="CanResizeWithGrip" />
+                        <Setter Property="ShowInTaskbar" Value="False" />
+                    </Style>
+                </triggerAction:CustomPopupWindowAction.WindowStyle>
+                <triggerAction:CustomPopupWindowAction.WindowContent>
+                    <settings:SettingsView />
+                </triggerAction:CustomPopupWindowAction.WindowContent>
+            </triggerAction:CustomPopupWindowAction>
+        </interactionRequest:InteractionRequestTrigger>
+        <!-- -->
+        <interactionRequest:InteractionRequestTrigger SourceObject="{Binding CompletedNotificationRequest}">
+            <triggerAction:CustomPopupWindowAction>
+                <triggerAction:CustomPopupWindowAction.WindowStyle>
+                    <Style TargetType="Window">
+                        <Setter Property="Width" Value="530" />
+                        <Setter Property="Height" Value="180" />
+                        <Setter Property="ResizeMode" Value="CanResizeWithGrip" />
+                        <Setter Property="ShowInTaskbar" Value="False" />
+                    </Style>
+                </triggerAction:CustomPopupWindowAction.WindowStyle>
+                <!-- <mvvm:PopupWindowAction.WindowContent> -->
+                <!--     <settings:SettingsView /> -->
+                <!-- </mvvm:PopupWindowAction.WindowContent> -->
+            </triggerAction:CustomPopupWindowAction>
+        </interactionRequest:InteractionRequestTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid Grid.IsSharedSizeScope="True" Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Style="{StaticResource RowDefinitionStyle}" />
+        </Grid.RowDefinitions>
+
+        <folderInfo:FolderInfoView DataContext="{Binding SourceViewModel}" Grid.Row="0" Grid.Column="0" />
+        <GridSplitter Grid.Row="0" Grid.Column="1"
+                      ShowsPreview="False" Width="3"
+                      HorizontalAlignment="Center" VerticalAlignment="Stretch" />
+        <folderInfo:FolderInfoView DataContext="{Binding TargetViewModel}" Grid.Row="0" Grid.Column="2" />
+
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Style="{StaticResource RowDefinitionStyle}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding CompletedCount}" />
+                    <TextBlock Grid.Column="1" Text="/" />
+                    <TextBlock Grid.Column="2" Text="{Binding SelectedCount}" />
+                </Grid>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="1" Margin="20,0,20,0" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="1" Margin="5,0,5,0">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding FileAction}" Value="{x:Static viewModel:FileAction.Copying}">
+                                        <Setter Property="Text" Value="{Binding Source={StaticResource LocalizationManager}, Path=Instance.Resources.Copying}" />
+                                    </DataTrigger> 
+                                    <DataTrigger Binding="{Binding FileAction}" Value="{x:Static viewModel:FileAction.Removing}">
+                                        <Setter Property="Text" Value="Remove" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBlock Grid.Column="2" Text="{Binding CurrentFile}" />
+                </Grid>
+            </StackPanel>
+
+            <Button Grid.Column="3" Style="{StaticResource UpdateButtonImageStyle}"
+                    Command="{Binding Path= RefreshCommand}" />
+            <Button Grid.Column="4" Style="{StaticResource StartButtonImageStyle}"
+                    Command="{Binding Path= StartCommand}" />
+            <Button Grid.Column="5" Style="{StaticResource SettingsButtonImageStyle}"
+                    Command="{Binding Path= SettingCommand}" />
+            <Button Grid.Column="6" Style="{StaticResource HistoryButtonImageStyle}"
+                    Command="{Binding Path= HistoryCommand}" />
+            <Button Grid.Column="7" Style="{StaticResource ExitButtonImageStyle}"
+                    Command="{Binding Path= CloseCommand}" />
+        </Grid>
+    </Grid>
+</Window>

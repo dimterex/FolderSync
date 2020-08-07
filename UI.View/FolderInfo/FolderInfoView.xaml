@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="UI.View.FolderInfo.FolderInfoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:folderInfo="clr-namespace:UI.ViewModel.FolderInfo;assembly=UI.ViewModel"
+             xmlns:enum="clr-namespace:Core;assembly=Core"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=folderInfo:FolderInfoViewModel}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Grid.IsSharedSizeScope="True" Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Style="{StaticResource FirstColumnDefinitionStyle}" />
+            <ColumnDefinition Style="{StaticResource LastColumnDefinitionStyle}" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Style="{StaticResource RowDefinitionStyle}" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Style="{StaticResource RowDefinitionStyle}" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Style="{StaticResource FirstColumnDefinitionStyle}" />
+                <ColumnDefinition Style="{StaticResource LastColumnDefinitionStyle}" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Style="{StaticResource RowDefinitionStyle}" />
+                <RowDefinition Style="{StaticResource RowDefinitionStyle}" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                       Text="{Binding Source={StaticResource LocalizationManager}, Path=Instance.Resources.ChooseFolder, StringFormat='{}{0}:'}" />
+            <TextBox Text="{Binding SourcePath, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="0" />
+            <Button
+                Grid.Row="1" Grid.Column="1"
+                Style="{StaticResource FolderButtonImageStyle}"
+                Command="{Binding Path=OpenFolderCommand}" CommandParameter="{x:Static enum:FolderType.SourceFolder}" />
+
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <CheckBox Grid.Column="0"
+                      IsChecked="{Binding IsAllCopySource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Style="{StaticResource CheckBoxCopyImageStyle}" />
+            <CheckBox Grid.Column="1"
+                      IsChecked="{Binding IsAllDeleteSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Style="{StaticResource CheckBoxDeleteImageStyle}" />
+        </Grid>
+
+        <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding InSourceFileNotExistTarget}"
+                  SelectionMode="Single" IsSelected="False">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Binding="{Binding IsCopy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        ElementStyle="{StaticResource CheckBoxCopyImageStyle}"
+                                        EditingElementStyle="{StaticResource CheckBoxCopyImageStyle}" />
+                <DataGridCheckBoxColumn Binding="{Binding IsDelete, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        ElementStyle="{StaticResource CheckBoxDeleteImageStyle}"
+                                        EditingElementStyle="{StaticResource CheckBoxDeleteImageStyle}" />
+                <DataGridTextColumn Binding="{Binding FileName}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</UserControl>

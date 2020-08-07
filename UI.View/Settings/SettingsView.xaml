@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="UI.View.Settings.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mvvm:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:settings="clr-namespace:UI.ViewModel.Settings;assembly=UI.ViewModel"
+             xmlns:mvvm="http://prismlibrary.com/"
+             d:DataContext="{d:DesignInstance settings:SettingsWindowViewModel}"
+             mc:Ignorable="d"
+             d:Width="500"
+             Margin="5"
+             d:Height="Auto">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0"
+                   Text="{Binding Source={StaticResource LocalizationManager}, Path=Instance.Resources.SelectFolderToHistory, StringFormat='{}{0}:'}" />
+
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding FolderForHistory}" />
+        <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource FolderButtonImageStyle}"
+                Command="{Binding OpenFolderCommand}" />
+
+        <TextBlock Grid.Row="1" Grid.Column="0"
+                   Text="{Binding Source={StaticResource LocalizationManager}, Path=Instance.Resources.BlackList, StringFormat='{}{0}:'}" />
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding IgnorableFileFormat}" />
+        <CheckBox Grid.Row="1" Grid.Column="2" IsChecked="{Binding IsUseIgnoreFilter}" />
+
+        <TextBlock Grid.Row="2" Grid.Column="0"
+                   Text="{Binding Source={StaticResource LocalizationManager}, Path=Instance.Resources.WhiteList, StringFormat='{}{0}:'}" />
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding FilteredFileFormat}" />
+        <CheckBox Grid.Row="2" Grid.Column="2" IsChecked="{Binding IsUseFilter}" />
+        
+        
+        <TextBlock Grid.Row="3" Grid.Column="0"
+                   Text="{Binding Source={StaticResource LocalizationManager}, Path=Instance.Resources.Locale, StringFormat='{}{0}:'}" />
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Locale}" />
+        
+        
+
+        <Button Grid.Row="4" Grid.Column="2" Style="{StaticResource SaveButtonImageStyle}"
+                Command="{Binding SaveCommand}" />
+    </Grid>
+</UserControl>

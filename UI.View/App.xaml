@@ -1,0 +1,19 @@
+﻿<prism:PrismApplication x:Class="UI.View.App"
+                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                        xmlns:prism="http://prismlibrary.com/"
+                        xmlns:converters="clr-namespace:UI.View.Converters">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/IconsDictionary.xaml" />
+                <ResourceDictionary Source="Resources/ResourceDictionary.xaml" />
+                <ResourceDictionary>
+                    <converters:HistoryItemConverter x:Key="HistoryItemConverter" />
+                    <converters:HistoryDateTimeConverter x:Key="HistoryDateTimeConverter" />
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</prism:PrismApplication>
